@@ -66,7 +66,7 @@
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
-    _.each(array, function(item, index) {
+    _.each(array, function(item, index, collection) {
       if (item === target && result === -1) {
         result = index;
       }
@@ -91,10 +91,36 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+      return _.filter(collection, function(value) {
+        return !test(value);
+      })
+    
   };
 
   // Produce a duplicate-free version of the array.
+  // tempArray = [1,2,3,3,4]
+
   _.uniq = function(array, isSorted, iterator) {
+    var finalArray = [];
+    var iteratedArray = [];
+      if(isSorted) {
+        _.each(array, function(element, index){
+          if (_.indexOf(iteratedArray, iterator(element)) === - 1) {
+                iteratedArray.push(iterator(element));
+                finalArray.push(element);
+       }
+        })
+      }
+
+       else {
+      _.each(array, function(element) {
+       if(_.indexOf(finalArray, element) === -1)  {
+             finalArray.push(element);
+          }
+     })
+    }
+
+    return finalArray;
   };
 
 
@@ -103,6 +129,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var result = [];
+    _.each(collection, function(value, index, collection){
+      result.push(iterator(value, index, collection));
+    });
+    return result;  
   };
 
   /*
@@ -143,8 +174,17 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
-  _.reduce = function(collection, iterator, accumulator) {
+   _.reduce = function(collection, iterator, accumulator) {
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      collection = collection.slice(1);
+    }
+    _.each(collection, function(element, index) {
+      accumulator = iterator(accumulator, element, index);
+    });
+    return accumulator;
   };
+
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {

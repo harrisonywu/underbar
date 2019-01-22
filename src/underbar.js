@@ -108,18 +108,15 @@
           if (_.indexOf(iteratedArray, iterator(element)) === - 1) {
                 iteratedArray.push(iterator(element));
                 finalArray.push(element);
-       }
+          }
+        })
+      } else {
+        _.each(array, function(element) {
+          if(_.indexOf(finalArray, element) === -1)  {
+            finalArray.push(element);
+          }
         })
       }
-
-       else {
-      _.each(array, function(element) {
-       if(_.indexOf(finalArray, element) === -1)  {
-             finalArray.push(element);
-          }
-     })
-    }
-
     return finalArray;
   };
 

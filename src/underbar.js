@@ -71,7 +71,6 @@
         result = index;
       }
     });
-
     return result;
   };
 
@@ -151,7 +150,7 @@
     });
   };
 
-  // Reduces an array or object to a single value by repetitively calling
+  // Reduces an array or object to a single value by repeatedly calling
   // iterator(accumulator, item) for each item. accumulator should be
   // the return value of the previous iterator call.
   //  
@@ -198,8 +197,19 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
-  };
+    return _.reduce(collection, function(accumulator,item) {
+      if (iterator !== undefined) {
+        if (Boolean(iterator(item)) === false && accumulator === true) {
+          accumulator=false;
+        }
+      } else {
+        if (Boolean(item) === false && accumulator === true) {
+          accumulator=false;
+        }
+      }
+      return accumulator;
+    }, true);
+  }
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one

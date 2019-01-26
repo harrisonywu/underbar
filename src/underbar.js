@@ -215,6 +215,18 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    // when do _.every and _.some overlap?
+    //   when none are true, both some and every return false
+    //   when all emements are true, both some and every return true
+    //   when some elements true, some elements false, _.some returns true while _.every returns false
+    //   using logic rules, we can achieve what we want
+
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
+    return !_.every(collection, function(item) {
+      return !iterator(item);
+    })
   };
 
 

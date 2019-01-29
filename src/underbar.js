@@ -319,7 +319,23 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+  
+  // need to keep track of arguments and whether they've been called
+  //
+
   _.memoize = function(func) {
+    var argumentsObj ={};
+    var result;
+    var currentArgList = '';
+    return function () {
+      if (argumentsObj[JSON.stringify(arguments)] === undefined) {
+        result = func.apply(this, arguments);
+        argumentsObj[JSON.stringify(arguments)] = result;
+      } else {
+        result = argumentsObj[JSON.stringify(arguments)];
+      }
+      return result;
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
